@@ -1,2 +1,4 @@
-package com.seanrogandev.peakconditions.filter;public class AuthorizationFilter {
+package com.seanrogandev.peakconditions.filter;
+
+public class AuthorizationFilter {
 }

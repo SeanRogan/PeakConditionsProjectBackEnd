@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,17 +27,15 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @Slf4j
 public class MemberServiceImpl implements MemberService , UserDetailsService {
-    RoleRepository roleRepo;
-    MemberRepository memberRepo;
+    private final RoleRepository roleRepo;
+    private final MemberRepository memberRepo;
 
-    @Autowired
-    public MemberServiceImpl(RoleRepository roleRepo, MemberRepository memberRepo) {
-        this.memberRepo = memberRepo;
-        this.roleRepo = roleRepo;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Member saveMember(Member member) {
+        log.info("saving new user {} to the database" , member.getUserName());
+        member.setPassWord(passwordEncoder.encode(member.getPassWord()));
         return memberRepo.save(member);
     }
 

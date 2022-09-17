@@ -34,7 +34,7 @@ public class PeakConditionsApplication {
             memberService.saveRole(new Role(null, "ROLE_ADMIN"));
             memberService.saveRole(new Role(null, "ROLE_SUPER_ADMIN"));
 
-            memberService.saveMember(new Member(null, "Sean","Rogan","Srogan88@Gmail.com", bCryptPasswordEncoder().encode("mknmvs"), new ArrayList<>(), new MemberProfile()));
+            memberService.saveMember(new Member(null, "Sean","Rogan","Srogan88@Gmail.com", "mknmvs", new ArrayList<>(), new MemberProfile()));
 
             memberService.assignRole("Srogan88@Gmail.com","ROLE_SUPER_ADMIN");
             memberService.assignRole("Srogan88@Gmail.com","ROLE_USER_PAID");

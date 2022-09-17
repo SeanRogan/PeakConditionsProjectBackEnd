@@ -30,22 +30,36 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //if a request comes in from the login endpoint or the refresh token endpoint..
         if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
+            //go to the next filter in the chain(authentication)
             filterChain.doFilter(request, response);
         } else {
+            //otherwise check for an authorization token header
             String authorizationHeader = request.getHeader(AUTHORIZATION);
+            //if there is a bearer token header
             if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
+                    log.info("validating authorization bearer token");
+                    //save token as a string
                     String token = authorizationHeader.substring("Bearer ".length());
+                    //declare the algo to verify the token
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    //declare a verifier object to use the algorithm
                     JWTVerifier verifier = JWT.require(algorithm).build();
+                    //verify the token and save the decoded version
                     DecodedJWT decodedJWT = verifier.verify(token);
+                    //get the username from the decoded jwt
                     String username = decodedJWT.getSubject();
+                    //get the user roles from the decoded jwt and save them as an array of strings representing the type of role
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+                    //declare a collection to store the roles as simpleGrantedAuthority(SGA) objects.
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                    //loop through the roles and create/add SGA to collection
                      Arrays.stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
                     });
+
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -54,7 +68,6 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     log.error("Error logging in: {}", exception.getMessage());
                     response.setHeader("error", exception.getMessage());
                     response.setStatus(FORBIDDEN.value());
-                    //response.sendError(FORBIDDEN.value());
                     Map<String, String> error = new HashMap<>();
                     error.put("error_message", exception.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);

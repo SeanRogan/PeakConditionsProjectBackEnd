@@ -29,7 +29,6 @@ import java.util.Collection;
 public class MemberServiceImpl implements MemberService , UserDetailsService {
     private final RoleRepository roleRepo;
     private final MemberRepository memberRepo;
-
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -84,4 +83,8 @@ public class MemberServiceImpl implements MemberService , UserDetailsService {
         //return a spring.security User object, with the members username, password, and the authoritize/roles list
         return new User(user.getUserName(),user.getPassWord(), authorities);
     }
-}
+
+    public Member getMemberById(Long id) {
+        return memberRepo.getById(id);
+    }
+ }

@@ -19,26 +19,30 @@ import java.net.URI;
 @RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
-public class UserServiceController {
+public class MemberServiceController {
     private final MemberServiceImpl memberService;
 
+    //get all members
     @GetMapping("/members")
     //request for members returns an ok response with a page of members, via the member services class
     public ResponseEntity<Page<Member>> getMembers(){
         return ResponseEntity.ok().body(memberService.getMembers());
     }
 
+    //register a new member
     @PostMapping("/members/register")
     //post request with a Member object
     public ResponseEntity<Member> registerNewMember(@RequestBody Member member){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/members/register").toUriString());
         return ResponseEntity.created(uri).body(memberService.saveMember(member));
     }
+    //save a new role
     @PostMapping("/roles/save")
     public ResponseEntity<Role> saveRole(@RequestBody Role role){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/roles/save").toUriString());
         return ResponseEntity.created(uri).body(memberService.saveRole(role));
     }
+    //assign a role to a member
     @PostMapping("/role/assign")
     public ResponseEntity<?> assignRole(@RequestBody RoleToUserForm form) {
         memberService.assignRole(form.getUserName(),form.getUserName());

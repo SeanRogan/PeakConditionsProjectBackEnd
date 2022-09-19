@@ -28,9 +28,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        //get user name and password values from the http request
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        //create auth token with passed username/password combo
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username,password);
+        //authentication manager takes token and authenticates the username/password or throws an AuthenticationException
         return authenticationManager.authenticate(token);
     }
     @Override

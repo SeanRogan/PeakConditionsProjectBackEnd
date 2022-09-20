@@ -34,9 +34,9 @@ public class MemberProfileController {
     private final MemberServiceImpl memberService;
     //get profile
     @GetMapping("/profile")
-    public ResponseEntity<ModelAndView> getMemberProfile(@RequestParam Long userId) {
+    public ResponseEntity<MemberProfile> getMemberProfile(@RequestParam Long userId) {
         try{
-            return new ResponseEntity<>(profileService.getMemberProfile(memberService.getMemberById(userId)),HttpStatus.OK);
+            return new ResponseEntity<>(profileService.getMemberProfile(memberService.getMemberById(userId)), HttpStatus.OK);
         } catch(Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -44,8 +44,9 @@ public class MemberProfileController {
 
     }
     //create new profile
-    @PostMapping("/profile/editor")
-    public ResponseEntity<MemberProfile> editProfile(@RequestBody MemberProfile memberProfile) {
+    @PutMapping("/profile/edit")
+    public ResponseEntity<MemberProfile> editProfile(@RequestParam Long userId ,@RequestBody MemberProfile membereProfile) {
+        MemberProfile memberProfile = profileService.getMemberProfile(memberService.getMemberById(userId));
         try {
             profileService.saveProfile(memberProfile);
             return new ResponseEntity<>(memberProfile, HttpStatus.OK);

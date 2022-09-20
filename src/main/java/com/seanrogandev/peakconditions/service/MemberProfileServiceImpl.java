@@ -7,6 +7,8 @@ import com.seanrogandev.peakconditions.repository.MemberProfileRepository;
 import com.seanrogandev.peakconditions.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,20 +26,31 @@ public class MemberProfileServiceImpl implements MemberProfileService{
     private final MemberProfileRepository profileRepository;
     private final MemberRepository memberRepository;
     @Override
-    public ModelAndView getMemberProfile(Member member){
-        ModelAndView mav = new ModelAndView("profile-view");
-        mav.addObject(profileRepository.getById(member.getId()));
+    public MemberProfile getMemberProfile(Member member){
         log.info("fetching profile of {}", member.getUserName());
-        return mav;
+        try{
+            return profileRepository.getById(member.getId());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
     }
     @Override
     public void saveProfile(MemberProfile profile){
         log.info("Saving new profile for {}", memberRepository.getById(profile.getOwner_id()).getUserName());
-        profileRepository.save(profile);
+        try{
+            profileRepository.save(profile);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
     public void setProfileWeatherPreferences(MemberProfile profile, String weatherPreferences) {
-            profile.setPreferences(weatherPreferences);
             log.info("Updating profile \"{}\"" , profile.getOwner_id());
-            profileRepository.save(profile);
-    }
+            try {
+                profile.setPreferences(weatherPreferences);
+                profileRepository.save(profile);
+            } catch(Exception e) {
+                log.error(e.getMessage());
+            }
+            }
 }

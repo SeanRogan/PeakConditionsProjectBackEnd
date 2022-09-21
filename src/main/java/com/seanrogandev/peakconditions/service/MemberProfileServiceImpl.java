@@ -1,21 +1,17 @@
 package com.seanrogandev.peakconditions.service;
 
-import com.google.common.base.Joiner;
 import com.seanrogandev.peakconditions.dao.Member;
 import com.seanrogandev.peakconditions.dao.MemberProfile;
+import com.seanrogandev.peakconditions.dao.MountainPeak;
 import com.seanrogandev.peakconditions.repository.MemberProfileRepository;
 import com.seanrogandev.peakconditions.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -45,12 +41,25 @@ public class MemberProfileServiceImpl implements MemberProfileService{
         }
     }
     public void setProfileWeatherPreferences(MemberProfile profile, String weatherPreferences) {
-            log.info("Updating profile \"{}\"" , profile.getOwner_id());
-            try {
-                profile.setPreferences(weatherPreferences);
-                profileRepository.save(profile);
-            } catch(Exception e) {
-                log.error(e.getMessage());
-            }
-            }
+        log.info("Updating profile \"{}\"" , profile.getOwner_id());
+        try {
+            profile.setPreferences(weatherPreferences);
+            profileRepository.save(profile);
+        } catch(Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    public void addPeakToFavorites(MemberProfile profile, MountainPeak mountainPeak) {
+        try {
+            Member profileOwner = memberRepository.getById(profile.getOwner_id());
+            log.info("Adding {} to {}'s profile's favorite mountain peaks", mountainPeak.getPeakName(), profileOwner.getUserName());
+            HashSet<MountainPeak> favoritePeaks = profile.getFavoriteMountains();
+            favoritePeaks.add(mountainPeak);
+            saveProfile(profile);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
 }

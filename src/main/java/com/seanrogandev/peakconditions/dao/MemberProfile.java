@@ -1,13 +1,10 @@
 package com.seanrogandev.peakconditions.dao;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,10 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,8 +21,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Getter
 @Setter
-@ToString
-
 public class MemberProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

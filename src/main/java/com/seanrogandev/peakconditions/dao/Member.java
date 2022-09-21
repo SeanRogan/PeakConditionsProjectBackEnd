@@ -26,7 +26,7 @@ import java.util.Objects;
 import static javax.persistence.GenerationType.AUTO;
 
 /**
- *
+ * The Member class is the representation of a user of the application, either a free tier user, paid tier user, or admin
  */
 @Getter
 @Setter

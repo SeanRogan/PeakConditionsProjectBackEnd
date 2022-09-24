@@ -40,6 +40,7 @@ public class MemberProfileController {
     @PostMapping("/profile/new")
     public ResponseEntity<MemberProfile> createNewProfile(@RequestParam Long userId, @RequestBody MemberProfile memberProfile) {
         try {
+            //profileService.deleteProfile(userId);
             profileService.saveProfile(memberProfile);
             return new ResponseEntity<>(memberProfile, HttpStatus.OK);
         } catch (Exception e) {
@@ -57,7 +58,7 @@ public class MemberProfileController {
             memberProfile.setTemperaturePreferenceHigh(newProfile.getTemperaturePreferenceHigh());
             memberProfile.setTemperaturePreferenceLow(newProfile.getTemperaturePreferenceLow());
             memberProfile.setWindConditionsPreferenceMax(newProfile.getWindConditionsPreferenceMax());
-            memberProfile.setFavoriteMountains(newProfile.getFavoriteMountains());
+           // memberProfile.setFavoriteMountains(newProfile.getFavoriteMountains());
             profileService.saveProfile(memberProfile);
             return new ResponseEntity<>(memberProfile, HttpStatus.OK);
         } catch (Exception e) {

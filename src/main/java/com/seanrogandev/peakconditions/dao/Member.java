@@ -32,13 +32,12 @@ import static javax.persistence.GenerationType.AUTO;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Entity
 @AllArgsConstructor
-@NoArgsConstructor
+@Entity
 public class Member {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(unique = true , nullable = false)
+    @Column(nullable = false, unique = true)
     @MapsId
     private Long id;
 

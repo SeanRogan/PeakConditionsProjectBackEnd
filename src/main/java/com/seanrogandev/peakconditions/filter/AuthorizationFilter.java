@@ -32,7 +32,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //if a request comes in from the login endpoint or the refresh token endpoint..
         if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
-            //go to the next filter in the chain(authentication)
+            //continue application/go to the next filter in the chain(authentication)
             filterChain.doFilter(request, response);
         } else {
             //otherwise check for an authorization token header
@@ -56,9 +56,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     //declare a collection to store the roles as simpleGrantedAuthority(SGA) objects.
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     //loop through the roles and create/add SGA to collection
-                     Arrays.stream(roles).forEach(role -> {
-                        authorities.add(new SimpleGrantedAuthority(role));
-                    });
+                     Arrays.stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
 
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(username, null, authorities);

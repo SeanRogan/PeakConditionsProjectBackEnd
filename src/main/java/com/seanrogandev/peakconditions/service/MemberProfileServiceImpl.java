@@ -49,17 +49,17 @@ public class MemberProfileServiceImpl implements MemberProfileService{
             log.error(e.getMessage());
         }
     }
-
-    public void addPeakToFavorites(MemberProfile profile, MountainPeak mountainPeak) {
-        try {
-            Member profileOwner = memberRepository.getById(profile.getOwner_id());
-            log.info("Adding {} to {}'s profile's favorite mountain peaks", mountainPeak.getPeakName(), profileOwner.getUserName());
-            HashSet<MountainPeak> favoritePeaks = profile.getFavoriteMountains();
-            favoritePeaks.add(mountainPeak);
-            saveProfile(profile);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-    }
+//
+//    public void addPeakToFavorites(MemberProfile profile, MountainPeak mountainPeak) {
+//        try {
+//            Member profileOwner = memberRepository.getById(profile.getOwner_id());
+//            log.info("Adding {} to {}'s profile's favorite mountain peaks", mountainPeak.getPeakName(), profileOwner.getUserName());
+//            HashSet<MountainPeak> favoritePeaks = profile.getFavoriteMountains();
+//            favoritePeaks.add(mountainPeak);
+//            saveProfile(profile);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
+//    }
 
 }

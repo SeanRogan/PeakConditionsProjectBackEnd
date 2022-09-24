@@ -29,8 +29,8 @@ public class MemberProfile {
     @JoinColumn(table = "member" , referencedColumnName = "id")
     private Long owner_id;
     private String preferences;
-    @ManyToMany
-    private HashSet<MountainPeak> favoriteMountains;
+    //@ManyToMany
+    //private HashSet<MountainPeak> favoriteMountains;
     private String temperaturePreferenceLow;
     private String temperaturePreferenceHigh;
     private String windConditionsPreferenceMax;

@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.Filter;
 
@@ -46,9 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/api/getDailyReport/**").hasAnyAuthority("ROLE_USER_FREE","ROLE_USER_PAID", "ROLE_ADMIN", "ROLE_SUPER_ADMIN");
         http.authorizeRequests()
+                .antMatchers("/api/getExtendedReport/**").hasAnyAuthority("ROLE_USER_PAID", "ROLE_ADMIN", "ROLE_SUPER_ADMIN");
+        http.authorizeRequests()
                 .antMatchers("/api/login/**","/api/token/refresh/**").permitAll();
         http.authorizeRequests()
-                .antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER_FREE","ROLE_USER_PAID", "ROLE_ADMIN", "ROLE_SUPER_ADMIN");
+                .antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN");
         http.authorizeRequests()
                 .antMatchers(POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN");
         http.authorizeRequests().antMatchers("/" , "/home")
@@ -60,7 +63,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .permitAll()
                 .and()
-                .logout()
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/logout.done").deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
                 .permitAll()
                 .and().httpBasic();
         http.addFilter(authenticationFilter);

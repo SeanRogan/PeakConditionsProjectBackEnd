@@ -24,13 +24,13 @@ public class WeatherReportController {
 
     //get one day report
 @GetMapping("/getDailyReport/{peakId}")
-public ResponseEntity<List> getOneDayWeatherReport(@PathVariable Long peakId) {
+public ResponseEntity<List<Object>> getOneDayWeatherReport(@PathVariable Long peakId) {
     try {
 
         String uri = API_BASE_URL + "/report/daily/" + peakId;
         RestTemplate template = new RestTemplate();
         Object[] response = template.getForObject(uri, Object[].class);
-        return new ResponseEntity(Arrays.asList(response), HttpStatus.OK);
+        return new ResponseEntity<>(Arrays.asList(response), HttpStatus.OK);
     } catch (Exception e ) {
         log.error(e.getMessage());
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,7 +38,18 @@ public ResponseEntity<List> getOneDayWeatherReport(@PathVariable Long peakId) {
 }
 
 //get six day report
+
+@GetMapping("/getExtendedReport/{peakId}")
+    public ResponseEntity<List<Object>> getExtendedWeatherReport(@PathVariable Long peakId) {
+    try{
+        String uri = API_BASE_URL + "/report/extended/" + peakId;
+        RestTemplate template = new RestTemplate();
+        Object[] response = template.getForObject(uri, Object[].class);
+        return new ResponseEntity<>(Arrays.asList(response), HttpStatus.OK);
+    } catch (Exception e) {
+        log.error(e.getMessage());
+    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
     //get mountain object id
-
-
 }

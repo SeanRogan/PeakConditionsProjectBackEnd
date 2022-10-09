@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,7 +32,7 @@ public class MountainRange {
     @Column(name = "range_name" , unique = true, nullable = false)
     private String rangeName;
     @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<MountainPeak> peaksInRange = new HashSet<>();
+    private Set<MountainPeak> peaksInRange;
 
     @Override
     public boolean equals(Object o) {

@@ -3,6 +3,8 @@ package com.seanrogandev.peakconditions;
 import com.seanrogandev.peakconditions.dao.Member;
 import com.seanrogandev.peakconditions.dao.MemberProfile;
 import com.seanrogandev.peakconditions.dao.Role;
+import com.seanrogandev.peakconditions.repository.MountainPeakRepository;
+import com.seanrogandev.peakconditions.service.MemberProfileServiceImpl;
 import com.seanrogandev.peakconditions.service.MemberServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,7 +28,7 @@ public class PeakConditionsApplication {
     }
 
     @Bean
-    CommandLineRunner run(MemberServiceImpl memberService) {
+    CommandLineRunner run(MemberServiceImpl memberService, MemberProfileServiceImpl profileService , MountainPeakRepository peakRepo) {
         return args -> {
             memberService.saveRole(new Role(null, "ROLE_USER_FREE"));
             memberService.saveRole(new Role(null, "ROLE_USER_PAID"));

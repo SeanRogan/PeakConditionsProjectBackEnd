@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +21,8 @@ import java.util.Set;
 @Transactional
 
 public class MemberProfileServiceImpl implements MemberProfileService{
+
+    private final EntityManager entityManager;
     private final MemberProfileRepository profileRepository;
     private final MemberRepository memberRepository;
     @Override
@@ -49,17 +53,17 @@ public class MemberProfileServiceImpl implements MemberProfileService{
             log.error(e.getMessage());
         }
     }
-//
-//    public void addPeakToFavorites(MemberProfile profile, MountainPeak mountainPeak) {
-//        try {
-//            Member profileOwner = memberRepository.getById(profile.getOwner_id());
-//            log.info("Adding {} to {}'s profile's favorite mountain peaks", mountainPeak.getPeakName(), profileOwner.getUserName());
-//            HashSet<MountainPeak> favoritePeaks = profile.getFavoriteMountains();
-//            favoritePeaks.add(mountainPeak);
-//            saveProfile(profile);
-//        } catch (Exception e) {
-//            log.error(e.getMessage());
-//        }
-//    }
+
+    public void addPeakToFavorites(MemberProfile profile, MountainPeak mountainPeak) {
+        try {
+            Member profileOwner = memberRepository.getById(profile.getOwner_id());
+            log.info("Adding {} to {}'s profile's favorite mountain peaks", mountainPeak.getPeakName(), profileOwner.getUserName());
+            Set<MountainPeak> favoritePeaks = profile.getFavoritePeaks();
+            favoritePeaks.add(mountainPeak);
+            saveProfile(profile);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
 
 }

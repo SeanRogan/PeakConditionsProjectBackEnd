@@ -12,9 +12,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import java.util.HashSet;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -29,12 +30,15 @@ public class MemberProfile {
     @JoinColumn(table = "member" , referencedColumnName = "id")
     private Long owner_id;
     private String preferences;
-    //@ManyToMany
-    //private HashSet<MountainPeak> favoriteMountains;
     private String temperaturePreferenceLow;
     private String temperaturePreferenceHigh;
     private String windConditionsPreferenceMax;
-
+    @OneToMany(targetEntity = MountainPeak.class)
+    @JoinTable(name = "favorite_peaks",
+    joinColumns = @JoinColumn(name = "profile_id"),
+    inverseJoinColumns = @JoinColumn(name = "peak_id")
+    )
+    private Set<MountainPeak> favoritePeaks;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

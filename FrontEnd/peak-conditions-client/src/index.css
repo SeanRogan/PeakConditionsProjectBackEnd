@@ -39,8 +39,9 @@ a {
 .navbar {
     height: var(--nav-size);
     background-color: var(--bg);
-    padding: 1rem 1rem 0;
     border-bottom: var(--border);
+    justify-content: end;
+    padding: 1rem 1rem 1rem 0;
 }
 
 /* <ul> */
@@ -84,12 +85,8 @@ a {
     height: 20px;
 }
 
-#icon-right {
-    margin-right: 2rem;
-}
 .dropdown-menu-item {
-    width: 5rem;
-
+    width: 100px;
 }
 
 /* Dropdown Menu */

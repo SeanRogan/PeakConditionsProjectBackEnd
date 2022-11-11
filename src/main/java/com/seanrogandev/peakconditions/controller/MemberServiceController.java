@@ -2,7 +2,7 @@ package com.seanrogandev.peakconditions.controller;
 
 import com.seanrogandev.peakconditions.dao.Member;
 import com.seanrogandev.peakconditions.dao.Role;
-import com.seanrogandev.peakconditions.service.MemberServiceImpl;
+import com.seanrogandev.peakconditions.service.impl.MemberServiceImpl;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

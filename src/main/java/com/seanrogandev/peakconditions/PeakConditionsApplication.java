@@ -4,8 +4,8 @@ import com.seanrogandev.peakconditions.dao.Member;
 import com.seanrogandev.peakconditions.dao.MemberProfile;
 import com.seanrogandev.peakconditions.dao.Role;
 import com.seanrogandev.peakconditions.repository.MountainPeakRepository;
-import com.seanrogandev.peakconditions.service.MemberProfileServiceImpl;
-import com.seanrogandev.peakconditions.service.MemberServiceImpl;
+import com.seanrogandev.peakconditions.service.impl.MemberProfileServiceImpl;
+import com.seanrogandev.peakconditions.service.impl.MemberServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,7 +26,6 @@ public class PeakConditionsApplication {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     CommandLineRunner run(MemberServiceImpl memberService, MemberProfileServiceImpl profileService , MountainPeakRepository peakRepo) {
         return args -> {

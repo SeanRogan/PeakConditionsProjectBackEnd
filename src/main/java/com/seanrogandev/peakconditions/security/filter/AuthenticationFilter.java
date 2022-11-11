@@ -1,4 +1,4 @@
-package com.seanrogandev.peakconditions.filter;
+package com.seanrogandev.peakconditions.security.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

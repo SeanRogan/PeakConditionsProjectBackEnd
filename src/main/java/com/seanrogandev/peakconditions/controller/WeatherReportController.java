@@ -1,5 +1,6 @@
 package com.seanrogandev.peakconditions.controller;
 
+import com.seanrogandev.peakconditions.service.WeatherReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -8,29 +9,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Arrays;
-import java.util.List;
 @RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 
 public class WeatherReportController {
-    final private String API_BASE_URL = "https://peak-conditions-api.herokuapp.com";
     //todo after security is implemented in the API
     // login to api
+    WeatherReportService weatherReportService;
 
     //get one day report
 @GetMapping("/getDailyReport/{peakId}")
-public ResponseEntity<List<Object>> getOneDayWeatherReport(@PathVariable Long peakId) {
+public ResponseEntity<?> getOneDayWeatherReport(@PathVariable Long peakId) {
     try {
-
-        String uri = API_BASE_URL + "/report/daily/" + peakId;
-        RestTemplate template = new RestTemplate();
-        Object[] response = template.getForObject(uri, Object[].class);
-        return new ResponseEntity<>(Arrays.asList(response), HttpStatus.OK);
+        return weatherReportService.getWeatherReport(false, peakId);
     } catch (Exception e ) {
         log.error(e.getMessage());
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,16 +33,12 @@ public ResponseEntity<List<Object>> getOneDayWeatherReport(@PathVariable Long pe
 //get six day report
 
 @GetMapping("/getExtendedReport/{peakId}")
-    public ResponseEntity<List<Object>> getExtendedWeatherReport(@PathVariable Long peakId) {
-    try{
-        String uri = API_BASE_URL + "/report/extended/" + peakId;
-        RestTemplate template = new RestTemplate();
-        Object[] response = template.getForObject(uri, Object[].class);
-        return new ResponseEntity<>(Arrays.asList(response), HttpStatus.OK);
-    } catch (Exception e) {
+    public ResponseEntity<?> getExtendedWeatherReport(@PathVariable Long peakId) {
+    try {
+        return weatherReportService.getWeatherReport(true, peakId);
+    } catch (Exception e ) {
         log.error(e.getMessage());
-    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-    //get mountain object id
 }

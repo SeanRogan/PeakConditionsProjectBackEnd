@@ -1,10 +1,11 @@
-package com.seanrogandev.peakconditions.service;
+package com.seanrogandev.peakconditions.service.impl;
 
 import com.seanrogandev.peakconditions.dao.Member;
 import com.seanrogandev.peakconditions.dao.MemberProfile;
 import com.seanrogandev.peakconditions.dao.MountainPeak;
 import com.seanrogandev.peakconditions.repository.MemberProfileRepository;
 import com.seanrogandev.peakconditions.repository.MemberRepository;
+import com.seanrogandev.peakconditions.service.MemberProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Slf4j
 @Transactional
 
-public class MemberProfileServiceImpl implements MemberProfileService{
+public class MemberProfileServiceImpl implements MemberProfileService {
 
     private final EntityManager entityManager;
     private final MemberProfileRepository profileRepository;

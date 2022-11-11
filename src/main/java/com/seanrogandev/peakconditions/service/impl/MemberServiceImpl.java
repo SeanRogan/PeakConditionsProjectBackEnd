@@ -1,9 +1,10 @@
-package com.seanrogandev.peakconditions.service;
+package com.seanrogandev.peakconditions.service.impl;
 
 import com.seanrogandev.peakconditions.dao.Member;
 import com.seanrogandev.peakconditions.dao.Role;
 import com.seanrogandev.peakconditions.repository.MemberRepository;
 import com.seanrogandev.peakconditions.repository.RoleRepository;
+import com.seanrogandev.peakconditions.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,7 @@ import java.util.Collection;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class MemberServiceImpl implements MemberService , UserDetailsService {
+public class MemberServiceImpl implements MemberService, UserDetailsService {
     private final RoleRepository roleRepo;
     private final MemberRepository memberRepo;
     private final PasswordEncoder passwordEncoder;

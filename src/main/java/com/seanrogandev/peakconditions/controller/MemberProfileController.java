@@ -2,8 +2,8 @@ package com.seanrogandev.peakconditions.controller;
 
 
 import com.seanrogandev.peakconditions.dao.MemberProfile;
-import com.seanrogandev.peakconditions.service.MemberProfileServiceImpl;
-import com.seanrogandev.peakconditions.service.MemberServiceImpl;
+import com.seanrogandev.peakconditions.service.impl.MemberProfileServiceImpl;
+import com.seanrogandev.peakconditions.service.impl.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

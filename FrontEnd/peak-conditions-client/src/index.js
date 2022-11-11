@@ -3,5 +3,14 @@ import React from 'react';
 import './index.css';
 import App from './App';
 import {render} from "react-dom";
-render(<App /> , document.getElementById('root'));
+import {BrowserRouter} from "react-router-dom";
+import {AuthProvider} from "./Components/AuthProvider";
+
+render(
+    <BrowserRouter>
+        <AuthProvider>
+            <App />
+        </AuthProvider>
+    </BrowserRouter>,
+    document.getElementById('root'));
 

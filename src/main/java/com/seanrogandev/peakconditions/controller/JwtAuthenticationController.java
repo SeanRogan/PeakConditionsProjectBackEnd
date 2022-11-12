@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seanrogandev.peakconditions.dao.Member;
 import com.seanrogandev.peakconditions.dao.Role;
 import com.seanrogandev.peakconditions.service.impl.MemberServiceImpl;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.MimeTypeUtils;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +29,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class JwtAuthenticationController {
     @Autowired
     JwtAuthenticationController(MemberServiceImpl memberService) {
@@ -50,6 +50,7 @@ public class JwtAuthenticationController {
                 DecodedJWT decodedJWT = jwtVerifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
                 Member member = memberService.getMember(username);
+                log.info("refresh_token provided creating new token pair for " + username);
                 String access_token = JWT.create()
                         .withSubject(member.getUserName())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))

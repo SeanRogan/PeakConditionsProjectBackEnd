@@ -6,14 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -39,6 +33,14 @@ public class MemberProfile {
     inverseJoinColumns = @JoinColumn(name = "peak_id")
     )
     private Set<MountainPeak> favoritePeaks;
+    @Temporal(TemporalType.DATE)
+    private Date memberSince;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLoginDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastPasswordReset;
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

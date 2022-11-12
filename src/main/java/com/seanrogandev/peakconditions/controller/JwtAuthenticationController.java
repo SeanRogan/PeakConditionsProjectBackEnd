@@ -36,31 +36,44 @@ public class JwtAuthenticationController {
         this.memberService = memberService;
     }
 
-    private MemberServiceImpl memberService;
+    private final MemberServiceImpl memberService;
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //get the authorization headers from the request, if there is a refresh token it would be there
         String authorizationHeader = request.getHeader(AUTHORIZATION);
+        //if the authorization header isnt null and is a bearer token, attempt to authenticate the token
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
             try{
+                //save the provided token as a string
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
+                //instantiate the algorithm that will decode the JWT
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                //instantiate the jwtVerifier class which will do the work of decoding the Jwt
                 JWTVerifier jwtVerifier = JWT.require(algorithm).build();
+                //decode the jwt with the verifier
                 DecodedJWT decodedJWT = jwtVerifier.verify(refresh_token);
+                //extract the username from the jwt and save as a string for looking up the user in the database by their username
                 String username = decodedJWT.getSubject();
+                //find the member/user in the database
                 Member member = memberService.getMember(username);
                 log.info("refresh_token provided creating new token pair for " + username);
+                //create a new access token
                 String access_token = JWT.create()
                         .withSubject(member.getUserName())
+                        //token expires in 10 minutes. change the 10 below to change the expiration time.
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", member.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
+                //init a map to hold the tokens
                 Map<String, String> tokens = new HashMap<>();
+                //put the new access token and provided refresh token into the map
                 tokens.put("access_token" , access_token);
                 tokens.put("refresh_token", refresh_token);
+                //set response content type to json
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 
             } catch (Exception e) {

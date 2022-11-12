@@ -43,7 +43,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     log.info("validating authorization bearer token");
                     //save token as a string
                     String token = authorizationHeader.substring("Bearer ".length());
-                    //declare the algo to verify the token
+                    //declare the algo to verify the token, using the client secret code as an argument. 'secret' used here for demo
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     //declare a verifier object to use the algorithm
                     JWTVerifier verifier = JWT.require(algorithm).build();
@@ -57,10 +57,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     //loop through the roles and create/add SGA to collection
                      Arrays.stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-
+                    //create an authentication token from the user details and pass it to the security context for authentication
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    //move to the next filter in the chain
                     filterChain.doFilter(request, response);
                 }catch (Exception exception) {
                     log.error("Error logging in: {}", exception.getMessage());

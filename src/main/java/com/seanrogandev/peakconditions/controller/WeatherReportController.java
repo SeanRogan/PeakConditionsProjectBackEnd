@@ -20,22 +20,10 @@ public class WeatherReportController {
     WeatherReportService weatherReportService;
 
     //get one day report
-@GetMapping("/getDailyReport/{peakId}")
-public ResponseEntity<?> getOneDayWeatherReport(@PathVariable Long peakId) {
+@GetMapping("/getWeatherReport/{peakId}{paidUser}")
+public ResponseEntity<?> getWeatherReport(@PathVariable Long peakId, @PathVariable boolean paidUser) {
     try {
-        return weatherReportService.getWeatherReport(false, peakId);
-    } catch (Exception e ) {
-        log.error(e.getMessage());
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-}
-
-//get six day report
-
-@GetMapping("/getExtendedReport/{peakId}")
-    public ResponseEntity<?> getExtendedWeatherReport(@PathVariable Long peakId) {
-    try {
-        return weatherReportService.getWeatherReport(true, peakId);
+        return weatherReportService.getWeatherReport(paidUser, peakId);
     } catch (Exception e ) {
         log.error(e.getMessage());
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

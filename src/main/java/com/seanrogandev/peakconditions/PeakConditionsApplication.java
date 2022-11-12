@@ -28,6 +28,7 @@ public class PeakConditionsApplication {
     }
     @Bean
     CommandLineRunner run(MemberServiceImpl memberService, MemberProfileServiceImpl profileService , MountainPeakRepository peakRepo) {
+        //todo for deployment this shouldnt be here probably
         return args -> {
             memberService.saveRole(new Role(null, "ROLE_USER_FREE"));
             memberService.saveRole(new Role(null, "ROLE_USER_PAID"));
